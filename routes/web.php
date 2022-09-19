@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{ArticleController, ArticleCommentController};
+use App\Http\Controllers\{PostController, PostCommentController};
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,13 +14,15 @@ use App\Http\Controllers\{ArticleController, ArticleCommentController};
 */
 
 Route::get('/', function () {
-    return response()->redirectTo('/articles');
+    return view('home');
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::resource('articles', ArticleController::class);
+Route::resource('posts', PostController::class);
 
-Route::resource('article_comments', ArticleCommentController::class);
+Route::resource('post_categories', PostCommentController::class);
+
+Route::resource('post_comments', PostCommentController::class);

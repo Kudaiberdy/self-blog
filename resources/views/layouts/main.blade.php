@@ -17,42 +17,25 @@
 <header class="edica-header">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand" href="index.html"><img src="{{ asset("../../assets/images/logo.svg") }}" alt="Edica"></a>
-            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#edicaMainNav" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
             <div class="collapse navbar-collapse" id="edicaMainNav">
                 <ul class="navbar-nav mx-auto mt-2 mt-lg-0">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
-                    </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="blogDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Blog</a>
+                        <a class="nav-link dropdown-toggle" href="/posts" id="blogDropdown" aria-haspopup="true" aria-expanded="false">Posts</a>
                         <div class="dropdown-menu" aria-labelledby="blogDropdown">
-                            <a class="dropdown-item" href="blog.html">Blog Archive</a>
-                            <a class="dropdown-item" href="blog-single.html">Blog Post</a>
+                            <a class="dropdown-item" href="/posts/create">Create post</a>
+                            <a class="dropdown-item" href="blog-single.html">Archive posts</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
-                        <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-                            <a class="dropdown-item" href="404.html">404</a>
-                            <a class="dropdown-item" href="coming-soon.html">Coming Soon</a>
+                        <a class="nav-link dropdown-toggle" href="/post_categories" id="blogDropdown" aria-haspopup="true" aria-expanded="false">Category</a>
+                        <div class="dropdown-menu" aria-labelledby="blogDropdown">
+                            <a class="dropdown-item" href="/post_categories/create">Create category</a>
                         </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav mt-2 mt-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="#"><span class="flag-icon flag-icon-squared rounded-circle flag-icon-gb"></span> Eng</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Download</a>
                     </li>
                 </ul>
             </div>
@@ -62,59 +45,59 @@
 
 @yield('content')
 
-<footer class="edica-footer" data-aos="fade-up">
-    <div class="container">
-        <div class="row footer-widget-area">
-            <div class="col-md-3">
-                <a href="index.html" class="footer-brand-wrapper">
-                    <img src="{{ asset("../../assets/images/logo.svg") }}" alt="edica logo">
-                </a>
-                <p class="contact-details">hello@edica.com</p>
-                <p class="contact-details">+23 3000 000 00</p>
-                <nav class="footer-social-links">
-                    <a href="#!"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#!"><i class="fab fa-twitter"></i></a>
-                    <a href="#!"><i class="fab fa-behance"></i></a>
-                    <a href="#!"><i class="fab fa-dribbble"></i></a>
-                </nav>
-            </div>
-            <div class="col-md-3">
-                <nav class="footer-nav">
-                    <a href="#!" class="nav-link">Company</a>
+{{--<footer class="edica-footer" data-aos="fade-up">--}}
+{{--    <div class="container">--}}
+{{--        <div class="row footer-widget-area">--}}
+{{--            <div class="col-md-3">--}}
+{{--                <a href="index.html" class="footer-brand-wrapper">--}}
+{{--                    <img src="{{ asset("../../assets/images/logo.svg") }}" alt="edica logo">--}}
+{{--                </a>--}}
+{{--                <p class="contact-details">email@email.com</p>--}}
+{{--                <p class="contact-details">+0 000 000000</p>--}}
+{{--                <nav class="footer-social-links">--}}
+{{--                    <a href="#!"><i class="fab fa-facebook-f"></i></a>--}}
+{{--                    <a href="#!"><i class="fab fa-twitter"></i></a>--}}
+{{--                    <a href="#!"><i class="fab fa-behance"></i></a>--}}
+{{--                    <a href="#!"><i class="fab fa-dribbble"></i></a>--}}
+{{--                </nav>--}}
+{{--            </div>--}}
+{{--            <div class="col-md-3">--}}
+{{--                <nav class="footer-nav">--}}
+{{--                    <a href="#!" class="nav-link">Company</a>--}}
 
-                </nav>
-            </div>
-            <div class="col-md-3">
-                <nav class="footer-nav">
-                    <a href="#!" class="nav-link">FAQ</a>
-                </nav>
-            </div>
-            <div class="col-md-3">
-                <div class="dropdown footer-country-dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="footerCountryDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="flag-icon flag-icon-kz flag-icon-squared"></span> Lorem <i class="fas fa-chevron-down ml-2"></i>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="footerCountryDropdown">
-                        <button class="dropdown-item" href="#">
-                            <span class="flag-icon flag-icon-ru flag-icon-squared"></span> sssss
-                        </button>
-                        <button class="dropdown-item" href="#">
-                            <span class="flag-icon flag-icon-kz flag-icon-squared"></span> aaaaa
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom-content">
-            <nav class="nav footer-bottom-nav">
-                <a href="#!">Privacy & Policy</a>
-                <a href="#!">Terms</a>
-                <a href="#!">Site Map</a>
-            </nav>
-            <p class="mb-0">© Lorem <a href="https://www.google.com" target="_blank" rel="noopener noreferrer" class="text-reset">google</a> . All rights reserved.</p>
-        </div>
-    </div>
-</footer>
+{{--                </nav>--}}
+{{--            </div>--}}
+{{--            <div class="col-md-3">--}}
+{{--                <nav class="footer-nav">--}}
+{{--                    <a href="#!" class="nav-link">FAQ</a>--}}
+{{--                </nav>--}}
+{{--            </div>--}}
+{{--            <div class="col-md-3">--}}
+{{--                <div class="dropdown footer-country-dropdown">--}}
+{{--                    <button class="btn btn-secondary dropdown-toggle" type="button" id="footerCountryDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
+{{--                        <span class="flag-icon flag-icon-kz flag-icon-squared"></span> Lorem <i class="fas fa-chevron-down ml-2"></i>--}}
+{{--                    </button>--}}
+{{--                    <div class="dropdown-menu" aria-labelledby="footerCountryDropdown">--}}
+{{--                        <button class="dropdown-item" href="#">--}}
+{{--                            <span class="flag-icon flag-icon-ru flag-icon-squared"></span> sssss--}}
+{{--                        </button>--}}
+{{--                        <button class="dropdown-item" href="#">--}}
+{{--                            <span class="flag-icon flag-icon-kz flag-icon-squared"></span> aaaaa--}}
+{{--                        </button>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        <div class="footer-bottom-content">--}}
+{{--            <nav class="nav footer-bottom-nav">--}}
+{{--                <a href="#!">Privacy & Policy</a>--}}
+{{--                <a href="#!">Terms</a>--}}
+{{--                <a href="#!">Site Map</a>--}}
+{{--            </nav>--}}
+{{--            <p class="mb-0">© Lorem <a href="https://www.google.com" target="_blank" rel="noopener noreferrer" class="text-reset">google</a> . All rights reserved.</p>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</footer>--}}
 <script src="{{ asset("../../assets/vendors/popper.js/popper.min.js") }}"></script>
 <script src="{{ asset("../../assets/vendors/bootstrap/dist/js/bootstrap.min.js") }}"></script>
 <script src="{{ asset("../../assets/vendors/aos/aos.js") }}"></script>
