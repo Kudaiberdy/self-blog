@@ -8,13 +8,14 @@ use App\Models\{
     PostComment
 };
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
     /**
      * @return array
      */
-    private function getArticleCategory(): array
+    private function getPostsCategories(): array
     {
         $keys = PostCategory::select('id')->get()->map(fn($item) => $item->id)->all();
         $names = PostCategory::select('name')->get()->map(fn($item) => $item->name)->all();
@@ -29,8 +30,8 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $query = $request->input('query');
-        dump($query);
-        $posts = $query ? Post::where('name', 'like', "%{$query}%")->paginate() : Post::paginate();
+        $posts = $query ? Post::where('title', 'like', "%{$query}%")->paginate() : Post::paginate();
+
         return view('post.index', compact('posts', 'query'));
     }
 
@@ -41,7 +42,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $post = new Post();
+        $postsCategories = $this->getPostsCategories();
+
+        return view('post.create', compact('post', 'postsCategories'));
     }
 
     /**
@@ -52,7 +56,21 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $this->validate($request, [
+            'title' => 'required|unique:posts|max:200',
+            'content' => 'required|min:10',
+            'category_id' => [
+                Rule::in(array_keys($this->getPostsCategories())),
+            ],
+        ]);
+
+        $post = new Post();
+        $post->fill($data);
+        $post->save();
+
+        return redirect()
+            ->route('posts.index')
+            ->with('status', 'The post has been successfully created');
     }
 
     /**
@@ -61,9 +79,11 @@ class PostController extends Controller
      * @param  \App\Models\Post  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $article)
+    public function show($postId)
     {
-        //
+        $post = Post::findOrFail($postId);
+
+        return view('post.show', compact('post'));
     }
 
     /**
@@ -72,9 +92,11 @@ class PostController extends Controller
      * @param  \App\Models\Post  $article
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $article)
+    public function edit(Post $post)
     {
-        //
+        $postsCategories = $this->getPostsCategories();
+
+        return view('post.edit', compact('post', 'postsCategories'));
     }
 
     /**
@@ -84,19 +106,36 @@ class PostController extends Controller
      * @param  \App\Models\Post  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $article)
+    public function update(Request $request, $postId)
     {
-        //
+        $post = PostCategory::findOrFail($postId);
+        $data = $this->validate($request, [
+            'title' => 'required|unique:posts,title,' . $post->id,
+            'content' => 'required|min:10',
+            'category_id' => [
+                Rule::in(array_keys($this->getPostsCategories())),
+            ],
+        ]);
+
+        dump($data);
+        $post = new Post();
+        $post->fill($data);
+        $post->save();
+
+        return redirect()
+            ->route('posts.index')
+            ->with('status', 'The post has been successfully updated');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Post  $article
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Post $article)
+    public function destroy(Post $post)
     {
-        //
+        dump($post->id);
+//        if ($post) {
+//            $post->delete();
+//        }
+
+        return redirect()
+            ->route('posts.index')
+            ->with('status', 'The post has been successfully deleted');
     }
 }

@@ -2,86 +2,92 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\PostCategory;
 use Illuminate\Http\Request;
 
 class PostCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $category = Post::paginate();
-        return view('post_category.index', compact('category'));
+        $categories = PostCategory::paginate();
+
+        return view('post_category.index', compact('categories'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $category = new PostCategory();
+
+        return view('post_category.create', compact('category'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $date = $this->validate($request, [
+            'name' => 'required|unique:post_categories|max:100',
+            'description' => 'required|min:10',
+        ]);
+        $category = new PostCategory();
+        $category->fill($date);
+        $category->save();
+
+
+        return redirect()
+            ->route('post_categories.index')
+            ->with('status', 'The category has been successfully created');
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\PostCategory  $articleCategories
-     * @return \Illuminate\Http\Response
+     * @param $categoryId
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function show(PostCategory $articleCategories)
+    public function show($categoryId)
     {
-        //
+        $category = PostCategory::findOrFail($categoryId);
+
+        return view('post_category.show', compact('category'));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\PostCategory  $articleCategories
-     * @return \Illuminate\Http\Response
+     * @param $categoryId
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function edit(PostCategory $articleCategories)
+    public function edit($categoryId)
     {
-        //
+        $category = PostCategory::findOrFail($categoryId);
+
+        return view('post_category.edit', compact('category'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PostCategory  $articleCategories
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param string $categoryId
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, PostCategory $articleCategories)
+    public function update(Request $request, string $categoryId)
     {
-        //
+        $category = PostCategory::findOrFail($categoryId);
+        $data = $this->validate($request, [
+            'name' => 'required|unique:post_categories,name,' . $category->id,
+            'description' => 'required|min:10',
+        ]);
+
+        $category->fill($data);
+        $category->save();
+
+        return redirect()
+            ->route('post_categories.show', $categoryId)
+            ->with('status', 'The category has been successfully updated');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\PostCategory  $articleCategories
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(PostCategory $articleCategories)
+    public function destroy($category)
     {
-        //
+        if ($category) {
+            $category->delete();
+        }
+        return redirect()
+            ->route('articles.index')
+            ->with('status', 'The category has been successfully deleted');
     }
 }

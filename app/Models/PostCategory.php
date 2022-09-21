@@ -12,4 +12,9 @@ class PostCategory extends Model
     protected $table = 'post_categories';
     protected $guarded = false;
     protected $fillable = ['name', 'description'];
+
+    public function posts()
+    {
+        return $this->hasMany(__NAMESPACE__ . '\Post', 'category_id');
+    }
 }

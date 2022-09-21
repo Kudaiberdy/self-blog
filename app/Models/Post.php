@@ -12,4 +12,9 @@ class Post extends Model
     protected $table = 'posts';
     protected $guarded = false;
     protected $fillable = ['title', 'content', 'category_id'];
+
+    public function category()
+    {
+        return $this->belongsTo(__NAMESPACE__ . '\PostCategory');
+    }
 }

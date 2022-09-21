@@ -1,7 +1,12 @@
 <?php
-
+declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{PostController, PostCommentController};
+use App\Http\Controllers\{
+    PostController,
+    PostCommentController,
+    PostCategoryController
+};
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +28,6 @@ Auth::routes();
 
 Route::resource('posts', PostController::class);
 
-Route::resource('post_categories', PostCommentController::class);
+Route::resource('post_categories', PostCategoryController::class);
 
 Route::resource('post_comments', PostCommentController::class);

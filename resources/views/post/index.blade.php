@@ -1,6 +1,10 @@
 @extends('layouts.main')
 
+
 @section('content')
+
+    @include('flash')
+
     <main class="blog">
         <div class="container">
             <h1 class="edica-page-title" data-aos="fade-up">Blog</h1>
@@ -12,8 +16,8 @@
                         <div class="blog-post-thumbnail-wrapper">
                             <img src="assets/images/blog_1.jpg" alt="post category">
                         </div>
-                        <p class="blog-post-category">{{ $post->category }}</p>
-                        <a href="#!" class="blog-post-permalink">
+                        <p class="blog-post-category">{{ $post->category->name }}</p>
+                        <a href="{{ route('posts.show', $post->id) }}" class="blog-post-permalink">
                             <h6 class="blog-post-title">{{ $post->title }}</h6>
                         </a>
                     </div>
