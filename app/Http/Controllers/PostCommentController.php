@@ -25,9 +25,9 @@ class PostCommentController extends Controller
      * @param  \App\Models\Post  $article
      * @return \Illuminate\Http\Response
      */
-    public function create(Post $article)
+    public function create(Request $request, $postId)
     {
-        //
+
     }
 
     /**
@@ -37,9 +37,21 @@ class PostCommentController extends Controller
      * @param  \App\Models\Post  $article
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Post $article)
+    public function store(Request $request)
     {
-        //
+        $data = $this->validate($request, [
+            'body' => 'required',
+            'post_id' => 'required'
+        ]);
+        if ($request->hasFile('image')) {
+            $data['img_path'] = $request->file('image')->store('comments_images');
+        }
+        $comment = new PostComment();
+        $comment->fill($data);
+        $comment->save();
+
+        return redirect()
+            ->route('posts.show', $data['post_id']);
     }
 
     /**

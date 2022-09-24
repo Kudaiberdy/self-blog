@@ -28,6 +28,33 @@ Auth::routes();
 
 Route::resource('posts', PostController::class);
 
+Route::post('/posts/{id}/comments', [PostCommentController::class, 'store'])
+    ->name('post_comment.create');
+
+//Route::controller(PostsController::class)->group(function () {
+//    Route::get('/posts', 'index')
+//        ->name('posts.index');
+//
+//    Route::get('/posts/create', 'create')
+//        ->name('posts.create');
+//
+//    Route::post('/posts', 'store')
+//        ->name('posts.store');
+//
+//    Route::get('/posts/{id}/edit', 'edit')
+//        ->name('posts.edit');
+//
+//    Route::patch('/posts/{id}', 'update')
+//        ->name('posts.update');
+//
+//    Route::get('/posts/{id}', 'show')
+//        ->name('posts.show');
+//
+//    Route::delete('posts/{id}', 'destroy')
+//        ->name('posts.destroy');
+//});
+
+
 Route::resource('post_categories', PostCategoryController::class);
 
-Route::resource('post_comments', PostCommentController::class);
+//Route::resource('post_comments', PostCommentController::class);

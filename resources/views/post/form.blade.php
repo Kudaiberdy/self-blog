@@ -3,4 +3,5 @@
 {{ Form::label('content', 'Content') }}
 {{ Form::textarea('content') }}<br>
 {{ Form::label('category_id', 'Category')}}
-{{ Form::select('category_id', $postsCategories) }}<br>
+{{ Form::select('category_id', $postCategories) }}<br>
+{{ Form::file('image') }}<br>

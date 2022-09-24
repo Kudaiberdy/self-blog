@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use App\Models\{
     Post,
     PostCategory,
@@ -15,17 +16,17 @@ class PostController extends Controller
     /**
      * @return array
      */
-    private function getPostsCategories(): array
+    private function getPostCategories(): array
     {
         $keys = PostCategory::select('id')->get()->map(fn($item) => $item->id)->all();
         $names = PostCategory::select('name')->get()->map(fn($item) => $item->name)->all();
+
         return array_combine($keys, $names);
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index(Request $request)
     {
@@ -36,23 +37,20 @@ class PostController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
         $post = new Post();
-        $postsCategories = $this->getPostsCategories();
+        $postCategories = $this->getPostCategories();
 
-        return view('post.create', compact('post', 'postsCategories'));
+        return view('post.create', compact('post', 'postCategories'));
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
@@ -60,10 +58,13 @@ class PostController extends Controller
             'title' => 'required|unique:posts|max:200',
             'content' => 'required|min:10',
             'category_id' => [
-                Rule::in(array_keys($this->getPostsCategories())),
+                Rule::in(array_keys($this->getPostCategories())),
             ],
         ]);
 
+        if ($request->hasFile('image')) {
+            $data['img_path'] = $request->file('image')->store('posts_images');
+        }
         $post = new Post();
         $post->fill($data);
         $post->save();
@@ -74,65 +75,60 @@ class PostController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Post  $article
-     * @return \Illuminate\Http\Response
+     * @param $postId
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($postId)
     {
         $post = Post::findOrFail($postId);
+        $comments = PostComment::where('post_id', $postId)->get();
 
-        return view('post.show', compact('post'));
+        return view('post.show', compact('post', 'comments'));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Post  $article
-     * @return \Illuminate\Http\Response
+     * @param Post $post
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit(Post $post)
     {
-        $postsCategories = $this->getPostsCategories();
+        $postCategories = $this->getPostCategories();
 
-        return view('post.edit', compact('post', 'postsCategories'));
+        return view('post.edit', compact('post', 'postCategories'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $article
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $postId
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, $postId)
+    public function update(Request $request, $postId): \Illuminate\Http\RedirectResponse
     {
-        $post = PostCategory::findOrFail($postId);
+        $post = Post::findOrFail($postId);
         $data = $this->validate($request, [
-            'title' => 'required|unique:posts,title,' . $post->id,
+            'title' => 'required|max:200|unique:posts,title,' . $post->id,
             'content' => 'required|min:10',
             'category_id' => [
-                Rule::in(array_keys($this->getPostsCategories())),
+                Rule::in(array_keys($this->getPostCategories())),
             ],
         ]);
 
-        dump($data);
-        $post = new Post();
         $post->fill($data);
         $post->save();
 
         return redirect()
-            ->route('posts.index')
+            ->route('posts.show', $postId)
             ->with('status', 'The post has been successfully updated');
     }
 
-    public function destroy(Post $post)
+    /**
+     * @param Post $post
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Post $post): \Illuminate\Http\RedirectResponse
     {
-        dump($post->id);
-//        if ($post) {
-//            $post->delete();
-//        }
+        $post->delete();
 
         return redirect()
             ->route('posts.index')

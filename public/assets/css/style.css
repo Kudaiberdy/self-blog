@@ -5514,7 +5514,9 @@ button.bg-dark:focus {
   width: 75% !important; }
 
 .w-100 {
-  width: 100% !important; }
+  width: 30% !important;
+  height: 50%;
+}
 
 .w-auto {
   width: auto !important; }
@@ -7722,12 +7724,12 @@ a.text-dark:hover, a.text-dark:focus {
   padding-bottom: 33px; }
 
 .blog-post .edica-blog-post-meta {
-  text-align: center;
+  text-align: left;
   font-size: 14px;
   font-weight: 700;
   line-height: 1;
   color: #7d848b;
-  margin-bottom: 67px; }
+  margin-bottom: 5px; }
 
 .blog-post .blog-post-featured-img {
   margin-bottom: 44px; }

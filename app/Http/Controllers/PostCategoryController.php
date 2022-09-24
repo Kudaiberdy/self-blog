@@ -81,13 +81,12 @@ class PostCategoryController extends Controller
             ->with('status', 'The category has been successfully updated');
     }
 
-    public function destroy($category)
+    /**
+     * @param PostCategory $category
+     * @return void
+     */
+    public function destroy(PostCategory $category)
     {
-        if ($category) {
-            $category->delete();
-        }
-        return redirect()
-            ->route('articles.index')
-            ->with('status', 'The category has been successfully deleted');
+        //
     }
 }

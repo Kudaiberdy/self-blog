@@ -4,7 +4,7 @@
 
     @include('error')
 
-    {{ Form::model($post, ['route' => 'posts.store']) }}
+    {{ Form::open(['route' => 'posts.store', 'files' => true]) }}
     @include('post.form')
     {{ Form::submit('Create') }}
     {{ Form::close() }}
